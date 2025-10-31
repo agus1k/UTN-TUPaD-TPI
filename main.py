@@ -1,3 +1,6 @@
+import os
+
+# Funcion para manejar el menu principal mediante un match/case
 def mostrar_menu():
     while True:
         opcion = int(input("""
@@ -16,6 +19,35 @@ def mostrar_menu():
         
             case 7:
                 break
+        
+# Funcion para realizar la carga inicial de datos en la lista 
+def carga_inicial():
+
+    paises = []
+
+    if not os.path.exists("paises.csv"):
+        # Si no existe, lo creamos vacío con el encabezado
+        with open("paises.csv", "w") as archivo:
+            archivo.write("nombre,poblacion,superficie,continente\n")
+        print("No se encontró el archivo 'paises.csv'. Se creó uno nuevo.")
+        return []
+
+    with open("paises.csv", "r") as archivo:
+
+        next(archivo) # Saltamos la primera linea (encabezado)
+        for linea in archivo:
+            if linea.strip() == "":
+                continue
+
+            titulo, cantidad = linea.strip().split(",")
+
+            pais = crear_pais(titulo,cantidad)
+
+            paises.append(pais) # Agregamos el diccionario a la lista principal
+    
+    return paises
+        
+        
 
 
             
