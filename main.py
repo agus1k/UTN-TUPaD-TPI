@@ -16,7 +16,7 @@ def mostrar_menu():
     """))
         
         match opcion:
-        
+            
             case 7:
                 break
         
@@ -39,16 +39,24 @@ def carga_inicial():
             if linea.strip() == "":
                 continue
 
-            titulo, cantidad = linea.strip().split(",")
+            nombre, poblacion, superficie, continente = linea.strip().split(",")
 
-            pais = crear_pais(titulo,cantidad)
+            pais = crear_pais(nombre,poblacion,superficie,continente)
 
             paises.append(pais) # Agregamos el diccionario a la lista principal
     
     return paises
         
-        
+def crear_pais(nombre,poblacion,superficie,continente):
 
+    return {
+        "nombre": nombre.strip().title(),
+        "poblacion": int(poblacion),
+        "superficie": int(superficie),
+        "continente": continente.strip().title()
+    }
+
+print(carga_inicial())
 
             
         
