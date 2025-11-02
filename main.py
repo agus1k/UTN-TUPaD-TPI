@@ -19,6 +19,9 @@ def mostrar_menu(paises):
             case 1: 
                 agregar_pais(paises)
 
+            case 3: 
+                buscar_pais(paises)
+
             case 7:
                 break
         
@@ -48,6 +51,35 @@ def carga_inicial():
             paises.append(pais) # Agregamos el diccionario a la lista principal
     
     return paises
+
+# Funcion pedir texto y validar que no esté vacío.
+def pedir_string(mensaje):
+    while True:
+        texto = input(mensaje).strip()
+        if texto.strip() == "":
+            print("Por favor, ingrese un texto válido.")
+        else:
+            return texto
+        
+#  Funcion para pedir un numero y verificar que sea válido.
+def pedir_num(mensaje):
+    while True:
+        entrada = input(mensaje).strip()
+
+        if not entrada.isdigit():
+            print("Por favor, ingrese un número entero válido.")
+            continue
+
+        numero = int(entrada)
+
+        if numero == 0:
+            print("Por favor, ingrese un número distinto de 0")
+        else:
+            return numero
+        
+# Funcion para normalizar todos los textos que se ingresan, asegurando constancia
+def normalizar_string(texto):
+    return " ".join(texto.lower().split()).title()
 
 # Funcion para actualizar csv
 def actualizar_csv(paises):
@@ -81,10 +113,10 @@ def crear_pais(nombre,poblacion,superficie,continente):
     """
 
     return {
-        "nombre": nombre.strip().title(),
+        "nombre": normalizar_string(nombre.title()),
         "poblacion": int(poblacion),
         "superficie": int(superficie),
-        "continente": continente.strip().title()
+        "continente": normalizar_string(continente.title())
     }
 
 # Funcion para agregar un pais al csv.
@@ -96,15 +128,34 @@ def agregar_pais(paises):
     formateado mediante la función `crear_pais()` y lo añade a la lista existente.
     """
 
-    nombre = input("Ingrese el nombre del país: ")
-    poblacion = int(input("Ingrese la población del país: "))       # FALTA VALIDAR ENTRADAS
-    superficie = float(input("Ingrese la superficie del país: "))
-    continente = input("Ingrese el continente al que pertenece el país: ")
+    nombre = normalizar_string(pedir_string("Ingrese el nombre del país: "))
+    poblacion = pedir_num("Ingrese la población del país: ")     
+    superficie = pedir_num("Ingrese la superficie del país: ")
+    continente = normalizar_string(pedir_string("Ingrese el continente al que pertenece el país: "))
 
     pais = crear_pais(nombre,poblacion,superficie,continente)
     paises.append(pais)
 
     actualizar_csv(paises)
+
+# Funcion para buscar un país
+def buscar_pais(paises):
+    entrada_usuario = normalizar_string(pedir_string("Ingrese el nombre del país que desea buscar: "))
+
+    resultados = [] # Creamos lista para agregar todas las coincidencias
+
+    # Iteramos sobre la lista de paises original y agregamos todas las coincidencias a resultados
+    for pais in paises:
+        if entrada_usuario in pais["nombre"]:
+            resultados.append(pais)
+
+    # Mostramos los resultados en caso de que haya
+    if not resultados:
+        print("No se encontraron países con ese nombre.")
+    else:
+        print(f"\nSe encontraron {len(resultados)} resultado(s):")
+        for pais in resultados:
+            print(f"- {pais['nombre']} (Población: {pais['poblacion']}, Superficie: {pais['superficie']}, Continente: {pais['continente']})")
 
 # ==================== MAIN ======================
 
