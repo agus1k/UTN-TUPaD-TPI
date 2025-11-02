@@ -19,6 +19,9 @@ def mostrar_menu(paises):
             case 1: 
                 agregar_pais(paises)
 
+            case 3: 
+                buscar_pais(paises)
+
             case 7:
                 break
         
@@ -134,6 +137,25 @@ def agregar_pais(paises):
     paises.append(pais)
 
     actualizar_csv(paises)
+
+# Funcion para buscar un país
+def buscar_pais(paises):
+    entrada_usuario = normalizar_string(pedir_string("Ingrese el nombre del país que desea buscar: "))
+
+    resultados = [] # Creamos lista para agregar todas las coincidencias
+
+    # Iteramos sobre la lista de paises original y agregamos todas las coincidencias a resultados
+    for pais in paises:
+        if entrada_usuario in pais["nombre"]:
+            resultados.append(pais)
+
+    # Mostramos los resultados en caso de que haya
+    if not resultados:
+        print("No se encontraron países con ese nombre.")
+    else:
+        print(f"\nSe encontraron {len(resultados)} resultado(s):")
+        for pais in resultados:
+            print(f"- {pais['nombre']} (Población: {pais['poblacion']}, Superficie: {pais['superficie']}, Continente: {pais['continente']})")
 
 # ==================== MAIN ======================
 
