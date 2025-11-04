@@ -10,13 +10,13 @@ def actualizar_pais(paises):
         print("Opción inválida.")
         return
     
-    pais = input("Ingrese el título del libro: ").strip()
+    pais = input("Ingrese el nombre del pais: ").strip()
     
     if pais == "":
         print("El nombre del pais no puede estar vacío.")
         return
     
-    indice = buscar_pais(paises, pais)
+    indice = buscar_pais(paises)
     
     if indice == -1:
         print(f"El pais:  '{pais}' no existe en la lista de paises.")
@@ -25,14 +25,14 @@ def actualizar_pais(paises):
     if opcion == "P":
         nueva_poblacion = pedir_num("Ingrese la nueva población: ")
         paises[indice]["poblacion"] = nueva_poblacion
-        
+
     else:
         nueva_superficie = pedir_num("Ingrese la nueva superficie: ")
         paises[indice]["superficie"] = nueva_superficie
 
 
 def filtrar_paises(paises):
-
+    pass
 # Funcion para manejar el menu principal mediante un match/case
 def mostrar_menu(paises):
     while True:
@@ -51,10 +51,13 @@ def mostrar_menu(paises):
         match opcion:
             case 1: 
                 agregar_pais(paises)
+            case 2:
+                actualizar_pais(paises)
 
             case 3: 
-                buscar_pais(paises)
-
+                buscar_pais_imp(paises)
+            case 4:
+                filtrar_paises(paises)
             case 7:
                 break
         
@@ -184,12 +187,20 @@ def buscar_pais(paises):
 
     # Mostramos los resultados en caso de que haya
     if not resultados:
+        return None
+    else:
+            return resultados
+
+def buscar_pais_imp(paises):
+    resultados = buscar_pais(paises)
+    # Mostramos los resultados en caso de que haya
+    if not resultados:
         print("No se encontraron países con ese nombre.")
     else:
         print(f"\nSe encontraron {len(resultados)} resultado(s):")
         for pais in resultados:
             print(f"- {pais['nombre']} (Población: {pais['poblacion']}, Superficie: {pais['superficie']}, Continente: {pais['continente']})")
-
+    
 # ==================== MAIN ======================
 
 paises = carga_inicial() 
