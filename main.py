@@ -21,6 +21,9 @@ def mostrar_menu(paises):
 
             case 3: 
                 buscar_pais(paises)
+            
+            case 5:
+                ordenar_paises_impl(paises)
 
             case 7:
                 break
@@ -157,6 +160,74 @@ def buscar_pais(paises):
         for pais in resultados:
             print(f"- {pais['nombre']} (Población: {pais['poblacion']}, Superficie: {pais['superficie']}, Continente: {pais['continente']})")
 
+# Funcion para ordenar paises
+def ordenar_paises(paises, campo, descendente=False):
+
+    # Sacamos cantidad de elementos de la lista
+    cant_elementos = len(paises)
+    # Copiamos elementos a otra lista para no modificar la lista original
+    lista_ordenada = paises.copy()
+
+    # Primer bucle
+    for i in range(cant_elementos - 1):
+        hubo_cambio = False
+        # Segundo bucle
+        for j in range(cant_elementos - 1 - i):
+            # Pasamos los campos actuales para mayor legibilidad
+            a = lista_ordenada[j][campo]
+            b = lista_ordenada[j + 1][campo]
+
+            # Si a es String, lo pasamos a minusculas
+            if isinstance(a, str):
+                a, b = a.lower(), b.lower()
+
+            # Evaluamos dos opciones, si descendente es falso, significa que debemos ordenar de forma ascendente (verificando si a > b)
+            # Si descendente es verdadero, significa que debemos ordenar de forma descendente (verificando a < b)
+            if (a > b and not descendente) or (a < b and descendente):
+                lista_ordenada[j], lista_ordenada[j+1] = lista_ordenada[j + 1], lista_ordenada[j]
+                hubo_cambio = True
+        # Si no hubo ningun cambio rompemos el bucle para no seguir recorriendo innecesariamente
+        if not hubo_cambio:
+            break
+    return lista_ordenada
+
+def ordenar_paises_impl(paises):
+    opcion = pedir_num("""
+    Ordenar por:
+    1. Nombre
+    2. Población
+    3. Superficie
+                       
+    """)
+    
+    resultados = []
+
+    match opcion:
+        case 1:
+            resultados = ordenar_paises(paises, 'nombre')
+        case 2:
+            resultados = ordenar_paises(paises, 'poblacion')
+        case 3:
+            # Si selecciona la opcion de superficie, preguntamos si quiere en forma ascendente o descendente
+            opcion = pedir_num("""
+            Ordenar de forma:
+            1. Ascendente
+            2. Descendente
+
+            """)
+            if opcion == 1:
+                resultados = ordenar_paises(paises, 'superficie')
+            elif opcion == 2:
+                resultados = ordenar_paises(paises, 'superficie', True)
+        case _:
+            print("Opción inválida.")
+            return
+    
+    print("\n==== LISTA ORDENADA ====")
+    for pais in resultados:
+        print(f"- {pais['nombre']} | Población: {pais['poblacion']} | Superficie: {pais['superficie']} | Continente: {pais['continente']}")
+
+                
 # ==================== MAIN ======================
 
 paises = carga_inicial() 
