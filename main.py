@@ -9,27 +9,22 @@ def actualizar_pais(paises):
     if opcion not in ["P", "S"]:
         print("Opción inválida.")
         return
+        
     
-    pais = input("Ingrese el nombre del pais: ").strip()
-    
-    if pais == "":
-        print("El nombre del pais no puede estar vacío.")
-        return
-    
-    indice = buscar_pais(paises)
-    
-    if indice == -1:
-        print(f"El pais:  '{pais}' no existe en la lista de paises.")
-        return
-    
+    resultado = buscar_pais(paises)
+
+    pais = resultado[0]
+
     if opcion == "P":
         nueva_poblacion = pedir_num("Ingrese la nueva población: ")
-        paises[indice]["poblacion"] = nueva_poblacion
-
-    else:
+        pais["poblacion"] = nueva_poblacion
+        print(f"La población de {pais['nombre']} ha sido actualizada a {nueva_poblacion}.")
+        
+    elif opcion == "S":
         nueva_superficie = pedir_num("Ingrese la nueva superficie: ")
-        paises[indice]["superficie"] = nueva_superficie
-
+        pais["superficie"] = nueva_superficie
+        print(f"La superficie de {pais['nombre']} ha sido actualizada a {nueva_superficie}.")
+    
 
 def filtrar_paises(paises):
     pass
