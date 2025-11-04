@@ -1,4 +1,37 @@
 import os
+def actualizar_pais(paises):
+    print("Poblacion / Superficie")
+    print("P - Poblacion")
+    print("S - Superficie")
+    
+    opcion = input("Seleccione una opción: ").strip().upper()
+    
+    if opcion not in ["P", "S"]:
+        print("Opción inválida.")
+        return
+    
+    pais = input("Ingrese el título del libro: ").strip()
+    
+    if pais == "":
+        print("El nombre del pais no puede estar vacío.")
+        return
+    
+    indice = buscar_pais(paises, pais)
+    
+    if indice == -1:
+        print(f"El pais:  '{pais}' no existe en la lista de paises.")
+        return
+    
+    if opcion == "P":
+        nueva_poblacion = pedir_num("Ingrese la nueva población: ")
+        paises[indice]["poblacion"] = nueva_poblacion
+        
+    else:
+        nueva_superficie = pedir_num("Ingrese la nueva superficie: ")
+        paises[indice]["superficie"] = nueva_superficie
+
+
+def filtrar_paises(paises):
 
 # Funcion para manejar el menu principal mediante un match/case
 def mostrar_menu(paises):
