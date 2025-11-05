@@ -21,6 +21,12 @@ def mostrar_menu(paises):
 
             case 3: 
                 buscar_pais(paises)
+            
+            case 5:
+                ordenar_paises_impl(paises)
+
+            case 6:
+                mostrar_estadisticas(paises)
 
             case 7:
                 break
@@ -157,6 +163,127 @@ def buscar_pais(paises):
         for pais in resultados:
             print(f"- {pais['nombre']} (Población: {pais['poblacion']}, Superficie: {pais['superficie']}, Continente: {pais['continente']})")
 
+# Funcion para ordenar paises
+def ordenar_paises(paises, campo, descendente=False):
+
+    # Sacamos cantidad de elementos de la lista
+    cant_elementos = len(paises)
+    # Copiamos elementos a otra lista para no modificar la lista original
+    lista_ordenada = paises.copy()
+
+    # Primer bucle
+    for i in range(cant_elementos - 1):
+        hubo_cambio = False
+        # Segundo bucle
+        for j in range(cant_elementos - 1 - i):
+            # Pasamos los campos actuales para mayor legibilidad
+            a = lista_ordenada[j][campo]
+            b = lista_ordenada[j + 1][campo]
+
+            # Si a es String, lo pasamos a minusculas
+            if isinstance(a, str):
+                a, b = a.lower(), b.lower()
+
+            # Evaluamos dos opciones, si descendente es falso, significa que debemos ordenar de forma ascendente (verificando si a > b)
+            # Si descendente es verdadero, significa que debemos ordenar de forma descendente (verificando a < b)
+            if (a > b and not descendente) or (a < b and descendente):
+                lista_ordenada[j], lista_ordenada[j+1] = lista_ordenada[j + 1], lista_ordenada[j]
+                hubo_cambio = True
+        # Si no hubo ningun cambio rompemos el bucle para no seguir recorriendo innecesariamente
+        if not hubo_cambio:
+            break
+    return lista_ordenada
+
+def ordenar_paises_impl(paises): # AGREGAR VALIDACIONES
+    opcion = pedir_num("""
+    Ordenar por:
+    1. Nombre
+    2. Población
+    3. Superficie
+                       
+    """)
+    
+    resultados = []
+
+    match opcion:
+        case 1:
+            resultados = ordenar_paises(paises, 'nombre')
+        case 2:
+            resultados = ordenar_paises(paises, 'poblacion')
+        case 3:
+            # Si selecciona la opcion de superficie, preguntamos si quiere en forma ascendente o descendente
+            opcion = pedir_num("""
+            Ordenar de forma:
+            1. Ascendente
+            2. Descendente
+
+            """)
+            if opcion == 1:
+                resultados = ordenar_paises(paises, 'superficie')
+            elif opcion == 2:
+                resultados = ordenar_paises(paises, 'superficie', True)
+        case _:
+            print("Opción inválida.")
+            return
+    
+    print("\n==== LISTA ORDENADA ====")
+    for pais in resultados:
+        print(f"- {pais['nombre']} | Población: {pais['poblacion']} | Superficie: {pais['superficie']} | Continente: {pais['continente']}")
+
+# ==== Funciones para calcular estadisticas ====
+
+def pais_mayor_poblacion(paises):
+    mayor_pais = paises[0]
+    for pais in paises:
+        if pais['poblacion'] > mayor_pais['poblacion']:
+            mayor_pais = pais
+
+    return mayor_pais
+
+def pais_menor_poblacion(paises):
+    menor_pais = paises[0]
+    for pais in paises:
+        if pais['poblacion'] < menor_pais['poblacion']:
+            menor_pais = pais
+
+    return menor_pais
+
+def promedio(paises, campo):
+    total = 0
+    for pais in paises:
+        total += pais[campo]
+    
+    promedio = total / len(paises)
+    return promedio
+
+def paises_por_continente(paises):
+    # Creamos contador para almacenar los continentes con sus cantidades de paises
+    contador = {}
+
+    for pais in paises:
+        continente = normalizar_string(pais['continente'])
+        # Con get obtenemos el valor actual de paises para ese continente, si no existe todavia, lo inicializamos en 0, finalmente le sumamos 1
+        contador[continente] = contador.get(continente, 0) + 1
+
+    return contador
+
+def mostrar_estadisticas(paises):
+    pais_mayor = pais_mayor_poblacion(paises)
+    pais_menor = pais_menor_poblacion(paises)
+    continentes = paises_por_continente(paises)  
+
+    print("===================== ESTADÍSTICAS ACTUALES =====================")
+    print(f"País con mayor población: {pais_mayor['nombre']} | {pais_mayor['poblacion']} habitantes")
+    print(f"País con menor población: {pais_menor['nombre']} | {pais_menor['poblacion']} habitantes")
+    print(f"Promedio de población: {promedio(paises, 'poblacion')}")
+    print(f"Promedio de superficie: {promedio(paises, 'superficie')}")
+    print("\nCantidad de países por continente:")
+
+    for continente, cantidad in continentes.items():
+        print(f" - {continente}: {cantidad}")
+
+    print("=================================================================\n")
+                         
 # ==================== MAIN ======================
 
 paises = carga_inicial() 
