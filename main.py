@@ -25,6 +25,9 @@ def mostrar_menu(paises):
             case 5:
                 ordenar_paises_impl(paises)
 
+            case 6:
+                mostrar_estadisticas(paises)
+
             case 7:
                 break
         
@@ -191,7 +194,7 @@ def ordenar_paises(paises, campo, descendente=False):
             break
     return lista_ordenada
 
-def ordenar_paises_impl(paises):
+def ordenar_paises_impl(paises): # AGREGAR VALIDACIONES
     opcion = pedir_num("""
     Ordenar por:
     1. Nombre
@@ -227,7 +230,60 @@ def ordenar_paises_impl(paises):
     for pais in resultados:
         print(f"- {pais['nombre']} | Población: {pais['poblacion']} | Superficie: {pais['superficie']} | Continente: {pais['continente']}")
 
-                
+# ==== Funciones para calcular estadisticas ====
+
+def pais_mayor_poblacion(paises):
+    mayor_pais = paises[0]
+    for pais in paises:
+        if pais['poblacion'] > mayor_pais['poblacion']:
+            mayor_pais = pais
+
+    return mayor_pais
+
+def pais_menor_poblacion(paises):
+    menor_pais = paises[0]
+    for pais in paises:
+        if pais['poblacion'] < menor_pais['poblacion']:
+            menor_pais = pais
+
+    return menor_pais
+
+def promedio(paises, campo):
+    total = 0
+    for pais in paises:
+        total += pais[campo]
+    
+    promedio = total / len(paises)
+    return promedio
+
+def paises_por_continente(paises):
+    # Creamos contador para almacenar los continentes con sus cantidades de paises
+    contador = {}
+
+    for pais in paises:
+        continente = normalizar_string(pais['continente'])
+        # Con get obtenemos el valor actual de paises para ese continente, si no existe todavia, lo inicializamos en 0, finalmente le sumamos 1
+        contador[continente] = contador.get(continente, 0) + 1
+
+    return contador
+
+def mostrar_estadisticas(paises):
+    pais_mayor = pais_mayor_poblacion(paises)
+    pais_menor = pais_menor_poblacion(paises)
+    continentes = paises_por_continente(paises)  
+
+    print("===================== ESTADÍSTICAS ACTUALES =====================")
+    print(f"País con mayor población: {pais_mayor['nombre']} | {pais_mayor['poblacion']} habitantes")
+    print(f"País con menor población: {pais_menor['nombre']} | {pais_menor['poblacion']} habitantes")
+    print(f"Promedio de población: {promedio(paises, 'poblacion')}")
+    print(f"Promedio de superficie: {promedio(paises, 'superficie')}")
+    print("\nCantidad de países por continente:")
+
+    for continente, cantidad in continentes.items():
+        print(f" - {continente}: {cantidad}")
+
+    print("=================================================================\n")
+                         
 # ==================== MAIN ======================
 
 paises = carga_inicial() 
