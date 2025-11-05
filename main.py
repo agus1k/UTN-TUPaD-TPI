@@ -5,12 +5,13 @@ def actualizar_pais(paises):
     print("Poblacion / Superficie")
     print("P - Poblacion")
     print("S - Superficie")
-    
-    opcion = input("Seleccione una opción: ").strip().upper()
-    
-    if opcion not in ["P", "S"]:
-        print("Opción inválida.")
-        return
+
+    while True:
+        opcion = pedir_string("Seleccione una opción: ")
+        if opcion not in ["P", "S"]:
+            print("Opción inválida.")
+        else:
+            break
     
     resultado = buscar_pais(paises)
 
@@ -25,6 +26,8 @@ def actualizar_pais(paises):
         nueva_superficie = pedir_num("Ingrese la nueva superficie: ")
         pais["superficie"] = nueva_superficie
         print(f"La superficie de {pais['nombre']} ha sido actualizada a {nueva_superficie}.")
+
+    actualizar_csv(paises)
 
 # Funcion para filtrar paises por continente
 def filtrar_continente(paises):
@@ -143,7 +146,7 @@ def carga_inicial():
 def pedir_string(mensaje):
     while True:
         texto = normalizar_string(input(mensaje))
-        if not texto:
+        if not texto or texto.isdigit():
             print("Por favor, ingrese un texto válido.")
         else:
             return texto
