@@ -1,4 +1,5 @@
 import os
+
 def actualizar_pais(paises):
     print("Poblacion / Superficie")
     print("P - Poblacion")
@@ -19,7 +20,7 @@ def actualizar_pais(paises):
         nueva_poblacion = pedir_num("Ingrese la nueva población: ")
         pais["poblacion"] = nueva_poblacion
         print(f"La población de {pais['nombre']} ha sido actualizada a {nueva_poblacion}.")
-        
+
     elif opcion == "S":
         nueva_superficie = pedir_num("Ingrese la nueva superficie: ")
         pais["superficie"] = nueva_superficie
@@ -27,7 +28,63 @@ def actualizar_pais(paises):
     
 
 def filtrar_paises(paises):
-    pass
+    filtro = input("Ingrese por que criterio desea filtrar (C/P/S): ").strip().upper()
+    if filtro not in ["C", "P", "S"]:
+        print("Opción inválida.")
+        return
+    
+    match filtro:
+    
+        case "C":
+            continente = normalizar_string(pedir_string("Ingrese el continente por el cual desea filtrar: "))
+            resultados = []
+            for pais in paises:
+                if pais["continente"] == continente:
+                    resultados.append(pais)
+                    
+            if not resultados:
+                print("No se encontraron países en ese continente.")
+                return
+            else:
+                print (f"Estos son los países del continente {continente}:")
+                print (resultados)
+
+        case "P":
+            poblacion_min = pedir_num("Ingrese la población mínima: ")
+            poblacion_max = pedir_num("Ingrese la población máxima: ")
+            resultados = []
+            if poblacion_min > poblacion_max:
+                print("El valor mínimo no puede ser mayor al máximo.")
+                return
+            for pais in paises:
+                if poblacion_min <= pais["poblacion"] and pais["poblacion"]<= poblacion_max:
+                    resultados.append(pais)
+            if not resultados:
+                print("No se encontraron países en ese rango de población.")
+                return
+            else:
+                print (f"Estos son los paises con la poblacion entre {poblacion_min} y {poblacion_max}:")
+                print (resultados)
+                
+
+        case "S":
+            superficie_min = pedir_num("Ingrese la superficie mínima: ")
+            superficie_max = pedir_num("Ingrese la superficie máxima: ")
+            resultados = []
+            if superficie_min > superficie_max:
+                print("El valor mínimo no puede ser mayor al máximo.")
+                return
+            for pais in paises:
+                if superficie_min <= pais["superficie"] and pais["superficie"]<= superficie_max:
+                    resultados.append(pais)
+            if not resultados:
+                print("No se encontraron países en ese rango de superficie.")
+                return
+            else:
+                print (f"Estos son los paises con la superficie entre {superficie_min} y {superficie_max}:")
+                print (resultados)
+    
+
 # Funcion para manejar el menu principal mediante un match/case
 def mostrar_menu(paises):
     while True:
