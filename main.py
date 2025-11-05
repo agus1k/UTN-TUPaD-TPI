@@ -14,6 +14,9 @@ def actualizar_pais(paises):
             break
     
     resultado = buscar_pais(paises)
+    if not resultado:
+        print("No se encontró el país indicado.")
+        return
 
     pais = resultado[0]
 
@@ -243,7 +246,7 @@ def buscar_pais(paises):
     if not resultados:
         return None
     else:
-            return resultados
+        return resultados
 
 def buscar_pais_imp(paises):
     resultados = buscar_pais(paises)
