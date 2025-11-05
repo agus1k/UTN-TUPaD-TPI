@@ -1,5 +1,90 @@
 import os
 
+def actualizar_pais(paises): # AGREGAR VALIDACIONES
+    print("Poblacion / Superficie")
+    print("P - Poblacion")
+    print("S - Superficie")
+    
+    opcion = input("Seleccione una opción: ").strip().upper()
+    
+    if opcion not in ["P", "S"]:
+        print("Opción inválida.")
+        return
+        
+    
+    resultado = buscar_pais(paises)
+
+    pais = resultado[0]
+
+    if opcion == "P":
+        nueva_poblacion = pedir_num("Ingrese la nueva población: ")
+        pais["poblacion"] = nueva_poblacion
+        print(f"La población de {pais['nombre']} ha sido actualizada a {nueva_poblacion}.")
+
+    elif opcion == "S":
+        nueva_superficie = pedir_num("Ingrese la nueva superficie: ")
+        pais["superficie"] = nueva_superficie
+        print(f"La superficie de {pais['nombre']} ha sido actualizada a {nueva_superficie}.")
+    
+
+def filtrar_paises(paises): # AGREGAR VALIDACIONES
+    filtro = input("Ingrese por que criterio desea filtrar (C/P/S): ").strip().upper()
+    if filtro not in ["C", "P", "S"]:
+        print("Opción inválida.")
+        return
+    
+    match filtro:
+    
+        case "C":
+            continente = normalizar_string(pedir_string("Ingrese el continente por el cual desea filtrar: "))
+            resultados = []
+            for pais in paises:
+                if pais["continente"] == continente:
+                    resultados.append(pais)
+                    
+            if not resultados:
+                print("No se encontraron países en ese continente.")
+                return
+            else:
+                print (f"Estos son los países del continente {continente}:")
+                print (resultados)
+
+        case "P":
+            poblacion_min = pedir_num("Ingrese la población mínima: ")
+            poblacion_max = pedir_num("Ingrese la población máxima: ")
+            resultados = []
+            if poblacion_min > poblacion_max:
+                print("El valor mínimo no puede ser mayor al máximo.")
+                return
+            for pais in paises:
+                if poblacion_min <= pais["poblacion"] and pais["poblacion"]<= poblacion_max:
+                    resultados.append(pais)
+            if not resultados:
+                print("No se encontraron países en ese rango de población.")
+                return
+            else:
+                print (f"Estos son los paises con la poblacion entre {poblacion_min} y {poblacion_max}:")
+                print (resultados)
+                
+
+        case "S":
+            superficie_min = pedir_num("Ingrese la superficie mínima: ")
+            superficie_max = pedir_num("Ingrese la superficie máxima: ")
+            resultados = []
+            if superficie_min > superficie_max:
+                print("El valor mínimo no puede ser mayor al máximo.")
+                return
+            for pais in paises:
+                if superficie_min <= pais["superficie"] and pais["superficie"]<= superficie_max:
+                    resultados.append(pais)
+            if not resultados:
+                print("No se encontraron países en ese rango de superficie.")
+                return
+            else:
+                print (f"Estos son los paises con la superficie entre {superficie_min} y {superficie_max}:")
+                print (resultados)
+    
+
 # Funcion para manejar el menu principal mediante un match/case
 def mostrar_menu(paises):
     while True:
@@ -18,16 +103,16 @@ def mostrar_menu(paises):
         match opcion:
             case 1: 
                 agregar_pais(paises)
-
+            case 2:
+                actualizar_pais(paises)
             case 3: 
-                buscar_pais(paises)
-            
+                buscar_pais_imp(paises)
+            case 4:
+                filtrar_paises(paises)
             case 5:
                 ordenar_paises_impl(paises)
-
             case 6:
                 mostrar_estadisticas(paises)
-
             case 7:
                 break
         
@@ -157,6 +242,14 @@ def buscar_pais(paises):
 
     # Mostramos los resultados en caso de que haya
     if not resultados:
+        return None
+    else:
+            return resultados
+
+def buscar_pais_imp(paises):
+    resultados = buscar_pais(paises)
+    # Mostramos los resultados en caso de que haya
+    if not resultados:
         print("No se encontraron países con ese nombre.")
     else:
         print(f"\nSe encontraron {len(resultados)} resultado(s):")
@@ -283,7 +376,7 @@ def mostrar_estadisticas(paises):
         print(f" - {continente}: {cantidad}")
 
     print("=================================================================\n")
-                         
+                       
 # ==================== MAIN ======================
 
 paises = carga_inicial() 
