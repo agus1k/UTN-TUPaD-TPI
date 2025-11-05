@@ -10,7 +10,6 @@ def actualizar_pais(paises): # AGREGAR VALIDACIONES
     if opcion not in ["P", "S"]:
         print("Opción inválida.")
         return
-        
     
     resultado = buscar_pais(paises)
 
@@ -28,7 +27,7 @@ def actualizar_pais(paises): # AGREGAR VALIDACIONES
     
 
 def filtrar_paises(paises): # AGREGAR VALIDACIONES
-    filtro = input("Ingrese por que criterio desea filtrar (C/P/S): ").strip().upper()
+    filtro = input("Ingrese por que criterio desea filtrar (C - Continente / P - Población / S - Superficie): ").strip().upper()
     if filtro not in ["C", "P", "S"]:
         print("Opción inválida.")
         return
@@ -36,7 +35,7 @@ def filtrar_paises(paises): # AGREGAR VALIDACIONES
     match filtro:
     
         case "C":
-            continente = normalizar_string(pedir_string("Ingrese el continente por el cual desea filtrar: "))
+            continente = pedir_string("Ingrese el continente por el cual desea filtrar: ")
             resultados = []
             for pais in paises:
                 if pais["continente"] == continente:
@@ -143,11 +142,11 @@ def carga_inicial():
     
     return paises
 
-# Funcion pedir texto y validar que no esté vacío.
+# Funcion pedir texto, normalizarlo y validar que no esté vacío.
 def pedir_string(mensaje):
     while True:
-        texto = input(mensaje).strip()
-        if texto.strip() == "":
+        texto = normalizar_string(input(mensaje))
+        if not texto:
             print("Por favor, ingrese un texto válido.")
         else:
             return texto
@@ -219,10 +218,10 @@ def agregar_pais(paises):
     formateado mediante la función `crear_pais()` y lo añade a la lista existente.
     """
 
-    nombre = normalizar_string(pedir_string("Ingrese el nombre del país: "))
+    nombre = pedir_string("Ingrese el nombre del país: ")
     poblacion = pedir_num("Ingrese la población del país: ")     
     superficie = pedir_num("Ingrese la superficie del país: ")
-    continente = normalizar_string(pedir_string("Ingrese el continente al que pertenece el país: "))
+    continente = pedir_string("Ingrese el continente al que pertenece el país: ")
 
     pais = crear_pais(nombre,poblacion,superficie,continente)
     paises.append(pais)
@@ -231,7 +230,7 @@ def agregar_pais(paises):
 
 # Funcion para buscar un país
 def buscar_pais(paises):
-    entrada_usuario = normalizar_string(pedir_string("Ingrese el nombre del país que desea buscar: "))
+    entrada_usuario = pedir_string("Ingrese el nombre del país que desea buscar: ")
 
     resultados = [] # Creamos lista para agregar todas las coincidencias
 
