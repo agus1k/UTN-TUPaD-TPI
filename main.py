@@ -64,25 +64,6 @@ def carga_inicial():
     
     return paises
 
-# =======================================================
-#         FUNCIONES PRINCIPALES (CRUD)
-# =======================================================
-    
-def crear_pais(nombre,poblacion,superficie,continente):
-    """
-    Crea un diccionario que representa un país con sus datos estandarizados.
-
-    Limpia espacios, aplica formato de título en el nombre y continente,
-    y convierte los valores numéricos a su tipo correspondiente.
-    """
-
-    return {
-        "nombre": normalizar_string(nombre.title()),
-        "poblacion": int(poblacion),
-        "superficie": int(superficie),
-        "continente": normalizar_string(continente.title())
-    }
-
 # Funcion para actualizar csv
 def actualizar_csv(paises):
     """
@@ -104,6 +85,25 @@ def actualizar_csv(paises):
             continente = pais["continente"]
 
             archivo.write(f"{nombre},{poblacion},{superficie},{continente}\n")
+
+# =======================================================
+#         FUNCIONES PRINCIPALES (CRUD)
+# =======================================================
+    
+def crear_pais(nombre,poblacion,superficie,continente):
+    """
+    Crea un diccionario que representa un país con sus datos estandarizados.
+
+    Limpia espacios, aplica formato de título en el nombre y continente,
+    y convierte los valores numéricos a su tipo correspondiente.
+    """
+
+    return {
+        "nombre": normalizar_string(nombre.title()),
+        "poblacion": int(poblacion),
+        "superficie": int(superficie),
+        "continente": normalizar_string(continente.title())
+    }
 
 # Funcion para agregar un pais al csv.
 def agregar_pais(paises): 
@@ -411,7 +411,7 @@ def mostrar_estadisticas(paises):
 
 def mostrar_menu(paises):
     while True:
-        opcion = int(input("""
+        opcion = pedir_num("""
     Bienvenido al programa de gestión de paises!
     Elija su opción:
     1. Agregar país
@@ -421,7 +421,7 @@ def mostrar_menu(paises):
     5. Ordenar países
     6. Mostrar estadísticas
     7. Salir
-    """))
+    """)
         
         match opcion:
             case 1: 
@@ -438,6 +438,8 @@ def mostrar_menu(paises):
                 mostrar_estadisticas(paises)
             case 7:
                 break
+            case _:
+                print("Opción inválida. Por favor, intente de nuevo.")
 
 # =======================================================
 #                          MAIN
