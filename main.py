@@ -1,4 +1,5 @@
 import os
+import csv
 
 # ===================================================
 # FUNCIONES DE UTILIDAD (Validación y Normalización)
@@ -41,25 +42,28 @@ def normalizar_string(texto):
 def carga_inicial():
 
     paises = []
+    archivo_nombre = "paises.csv"
 
-    if not os.path.exists("paises.csv"):
+    if not os.path.exists(archivo_nombre):
         # Si no existe, lo creamos vacío con el encabezado
-        with open("paises.csv", "w") as archivo:
-            archivo.write("nombre,poblacion,superficie,continente\n")
+        with open(archivo_nombre, "w", newline="") as archivo:
+            writer = csv.writer(archivo)
+            writer.writerow(["nombre", "poblacion", "superficie", "continente"])
         print("No se encontró el archivo 'paises.csv'. Se creó uno nuevo.")
         return []
 
-    with open("paises.csv", "r") as archivo:
+    with open(archivo_nombre, "r", newline="") as archivo:
 
-        next(archivo) # Saltamos la primera linea (encabezado)
-        for linea in archivo:
-            if linea.strip() == "":
-                continue
+        reader = csv.reader(archivo)
+        next(reader)  # Saltamos el encabezado
 
-            nombre, poblacion, superficie, continente = linea.strip().split(",")
+        for linea in reader:
+            if not linea:
+                continue  # Saltamos líneas vacías
+
+            nombre, poblacion, superficie, continente = linea
 
             pais = crear_pais(nombre,poblacion,superficie,continente)
-
             paises.append(pais) # Agregamos el diccionario a la lista principal
     
     return paises
@@ -67,24 +71,23 @@ def carga_inicial():
 # Funcion para actualizar csv
 def actualizar_csv(paises):
     """
-    Reescribe el archivo 'paises.csv' con la lista actual en memoria.
-
-    Cada vez que se llama esta función, se itera sobre la lista de países
-    y se sobrescribe completamente el archivo, garantizando consistencia
-    con el estado actual en memoria.
+    Reescribe el archivo 'paises.csv' con la lista actual en memoria
+    usando csv.DictWriter.
     """
+    archivo_nombre = "paises.csv"
+    
+    campos = ["nombre", "poblacion", "superficie", "continente"]
 
-    with open("paises.csv", "w") as archivo:
+    with open(archivo_nombre, "w", newline="") as archivo:
 
-        archivo.write("nombre,poblacion,superficie,continente\n")
+        # Usamos DictWriter para escribir diccionarios directamente
+        writer = csv.DictWriter(archivo, fieldnames=campos)
 
-        for pais in paises:
-            nombre = pais["nombre"]
-            poblacion = pais["poblacion"]
-            superficie = pais["superficie"]
-            continente = pais["continente"]
+        # Escribimos el encabezado
+        writer.writeheader()
 
-            archivo.write(f"{nombre},{poblacion},{superficie},{continente}\n")
+        # Escribimos las filas desde la lista de diccionarios
+        writer.writerows(paises)
 
 # =======================================================
 #         FUNCIONES PRINCIPALES (CRUD)
