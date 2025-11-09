@@ -1,5 +1,6 @@
 import csv
 import os
+import csv
 
 # ===================================================
 # FUNCIONES DE UTILIDAD (Validación y Normalización)
@@ -177,7 +178,28 @@ def actualizar_pais(paises):
         print("No se encontró el país indicado.")
         return
 
-    pais = resultado[0]
+    paises_encontrados = resultado
+    
+    print(f"\nSe encontraron {len(paises_encontrados)} pais(es):")
+    for i in enumerate(paises_encontrados):
+
+        print(f"{i[0]+1}. {paises_encontrados[i[0]]['nombre']} (Población: {paises_encontrados[i[0]]['poblacion']}, Superficie: {paises_encontrados[i[0]]['superficie']}, Continente: {paises_encontrados[i[0]]['continente']})")
+    
+    if len(paises_encontrados) > 1:
+        
+        while True:
+            posicion_actualizar = pedir_num("Ingrese el numero del pais que desea actualizar: ") - 1
+            
+            if posicion_actualizar < 0 or posicion_actualizar >= len(paises_encontrados):
+                print("Posición inválida.")
+            
+            else:
+                break
+    else:
+        posicion_actualizar = 0
+
+    pais = paises_encontrados[posicion_actualizar]
+
 
     if opcion == "P":
         nueva_poblacion = pedir_num("Ingrese la nueva población: ")
