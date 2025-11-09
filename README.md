@@ -47,11 +47,11 @@ python main.py
 * **https://github.com/agus1k/UTN-TUPaD-TPI
 * **https://www.youtube.com/watch?v=vRfZqV7UeqA
 
-#Ejemplos de Entrada y Salida
+# Ejemplos de Entrada y Salida
 
 El programa se maneja a través de un menú numérico.
 
-Ejemplo de Menú Principal:
+## Ejemplo de Menú Principal:
 
     Bienvenido al programa de gestión de paises!
     Elija su opción:
@@ -62,23 +62,25 @@ Ejemplo de Menú Principal:
     5. Ordenar países
     6. Mostrar estadísticas
     7. Salir
-Ejemplo de Flujo (Filtrar países):
+    
+## Ejemplo de Flujo (Filtrar países):
 
-Entrada de Usuario: 4
+### Entrada de Usuario: 4
 
-Salida del Programa (Sub-menú):
+## Salida del Programa (Sub-menú):
 
-Ingrese por que criterio desea filtrar (C - Continente / P - Población / S - Superficie):
-Entrada de Usuario: C
+`Ingrese por que criterio desea filtrar (C - Continente / P - Población / S - Superficie):
+Entrada de Usuario: C`
 
-Salida del Programa (Prompt):
+## Salida del Programa:
 
-Ingrese el continente por el cual desea filtrar:
-Entrada de Usuario: Europa
+`Ingrese el continente por el cual desea filtrar:`
 
-Salida del Programa (Resultados):
+### Entrada de Usuario: Europa
 
-Estos son los países del continente Europa:
-[{'nombre': 'Francia', 'poblacion': 2000000, 'superficie': 3000000, 'continente': 'Europa'}]
+## Salida del Programa (Resultados):
+
+`Estos son los países del continente Europa:
+[{'nombre': 'Francia', 'poblacion': 2000000, 'superficie': 3000000, 'continente': 'Europa'}]`
 
 
