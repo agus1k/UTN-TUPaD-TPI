@@ -46,7 +46,7 @@ El proyecto se basa en un modelo de **lista de diccionarios**, donde cada diccio
 ## Links
 
 - https://github.com/agus1k/UTN-TUPaD-TPI
-- https://www.youtube.com/watch?v=vRfZqV7UeqA
+- [https://www.youtube.com/watch?v=vRfZqV7UeqA](https://www.youtube.com/watch?v=jfFuIbv3lGc)
 
 # Ejemplos de Entrada y Salida
 
