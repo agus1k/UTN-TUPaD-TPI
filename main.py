@@ -1,3 +1,4 @@
+import csv
 import os
 import csv
 
@@ -231,7 +232,8 @@ def filtrar_continente(paises):
     # Mostramos paises encontrados en el continente
     else:
         print (f"Estos son los países del continente {continente}:")
-        print (resultados)
+        for pais in resultados:
+            print(f"- {pais['nombre']} | Población: {pais['poblacion']} | Superficie: {pais['superficie']} | Continente: {pais['continente']}")
 
 # Filtrar por poblacion
 def filtrar_poblacion(paises):
@@ -258,7 +260,8 @@ def filtrar_poblacion(paises):
         return
     else:
         print (f"Estos son los paises con la poblacion entre {poblacion_min} y {poblacion_max}:")
-        print (resultados)
+        for pais in resultados:
+            print(f"- {pais['nombre']} | Población: {pais['poblacion']} | Superficie: {pais['superficie']} | Continente: {pais['continente']}")
 
 # Filtrar paises por superficie
 def filtrar_superficie(paises):
@@ -284,14 +287,17 @@ def filtrar_superficie(paises):
         return
     else:
         print (f"Estos son los paises con la superficie entre {superficie_min} y {superficie_max}:")
-        print (resultados)
+        for pais in resultados:
+            print(f"- {pais['nombre']} | Población: {pais['poblacion']} | Superficie: {pais['superficie']} | Continente: {pais['continente']}")
 
 
 def filtrar_paises(paises): 
-    filtro = input("Ingrese por que criterio desea filtrar (C - Continente / P - Población / S - Superficie): ").strip().upper()
-    if filtro not in ["C", "P", "S"]:
-        print("Opción inválida.")
-        return
+    while True:
+        filtro = input("Ingrese por que criterio desea filtrar (C - Continente / P - Población / S - Superficie): ").strip().upper()
+        if filtro not in ["C", "P", "S"]:
+            print("Opción inválida.")
+        else:
+            break
     
     match filtro:
     
@@ -393,6 +399,7 @@ def pais_menor_poblacion(paises):
 
     return menor_pais
 
+# Funcion para calcular el promedio, en este caso necesitamos saber de población y superficie
 def promedio(paises, campo):
     total = 0
     for pais in paises:
