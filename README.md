@@ -81,10 +81,12 @@ Entrada de Usuario: C
 Ingrese el continente por el cual desea filtrar:
 ```
 
-### Entrada de Usuario: Europa
+### Entrada de Usuario: América
 
 ## Salida del Programa (Resultados):
 
-```Estos son los países del continente Europa:
-[{'nombre': 'Francia', 'poblacion': 2000000, 'superficie': 3000000, 'continente': 'Europa'}]
+```Estos son los países del continente América:
+- Argentina | Población: 45376763 | Superficie: 2780400 | Continente: América
+- Bolivia | Población: 11673029 | Superficie: 1098581 | Continente: América
+- Uruguay | Población: 3426260 | Superficie: 176215 | Continente: América
 ```
