@@ -1,6 +1,6 @@
 # (TPI Programación 1)
-El objetivo principal de este trabajo practico integrar es aplicar los conocimientos fundamentales de Python para desarrollar un sistema de consola capaz de gestionar un conjunto de datos de países, implementando funcionalidades de filtrado, ordenamiento y cálculo de estadísticas.
 
+El objetivo principal de este trabajo practico integrar es aplicar los conocimientos fundamentales de Python para desarrollar un sistema de consola capaz de gestionar un conjunto de datos de países, implementando funcionalidades de filtrado, ordenamiento y cálculo de estadísticas.
 
 ## Datos de la Universidad y la Cátedra
 
@@ -9,8 +9,8 @@ El objetivo principal de este trabajo practico integrar es aplicar los conocimie
 
 ## Integrantes
 
-* Agustin Miranda
-* Tobias Correa
+- Agustin Miranda
+- Tobias Correa
 
 ## Datos de Profesores
 
@@ -35,17 +35,18 @@ El proyecto se basa en un modelo de **lista de diccionarios**, donde cada diccio
 2.  Clona o descarga este repositorio.
 3.  Asegúrate de que el archivo `main.py` y `paises.csv` se encuentren en el mismo directorio.
 4.  Abre una terminal en ese directorio y ejecuta el siguiente comando:
-python main.py
+    python main.py
 
 ## Tecnologías Utilizadas
 
-* **Python 3:** Lenguaje principal del proyecto.
-* **Módulo `csv`:** Para la lectura y escritura de los datos (persistencia).
-* **Módulo `os`:** Para verificar la existencia del archivo `paises.csv`.
+- **Python 3:** Lenguaje principal del proyecto.
+- **Módulo `csv`:** Para la lectura y escritura de los datos (persistencia).
+- **Módulo `os`:** Para verificar la existencia del archivo `paises.csv`.
 
 ## Links
-* **https://github.com/agus1k/UTN-TUPaD-TPI
-* **https://www.youtube.com/watch?v=vRfZqV7UeqA
+
+- https://github.com/agus1k/UTN-TUPaD-TPI
+- https://www.youtube.com/watch?v=vRfZqV7UeqA
 
 # Ejemplos de Entrada y Salida
 
@@ -62,25 +63,28 @@ El programa se maneja a través de un menú numérico.
     5. Ordenar países
     6. Mostrar estadísticas
     7. Salir
-    
+
 ## Ejemplo de Flujo (Filtrar países):
 
 ### Entrada de Usuario: 4
 
 ## Salida del Programa (Sub-menú):
 
-`Ingrese por que criterio desea filtrar (C - Continente / P - Población / S - Superficie):
-Entrada de Usuario: C`
+```
+Ingrese por que criterio desea filtrar (C - Continente / P - Población / S - Superficie):
+Entrada de Usuario: C
+```
 
 ## Salida del Programa:
 
-`Ingrese el continente por el cual desea filtrar:`
+```
+Ingrese el continente por el cual desea filtrar:
+```
 
 ### Entrada de Usuario: Europa
 
 ## Salida del Programa (Resultados):
 
-`Estos son los países del continente Europa:
-[{'nombre': 'Francia', 'poblacion': 2000000, 'superficie': 3000000, 'continente': 'Europa'}]`
-
-
+```Estos son los países del continente Europa:
+[{'nombre': 'Francia', 'poblacion': 2000000, 'superficie': 3000000, 'continente': 'Europa'}]
+```
