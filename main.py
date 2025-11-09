@@ -270,10 +270,12 @@ def filtrar_superficie(paises):
 
 
 def filtrar_paises(paises): 
-    filtro = input("Ingrese por que criterio desea filtrar (C - Continente / P - Población / S - Superficie): ").strip().upper()
-    if filtro not in ["C", "P", "S"]:
-        print("Opción inválida.")
-        return
+    while True:
+        filtro = input("Ingrese por que criterio desea filtrar (C - Continente / P - Población / S - Superficie): ").strip().upper()
+        if filtro not in ["C", "P", "S"]:
+            print("Opción inválida.")
+        else:
+            break
     
     match filtro:
     
@@ -375,6 +377,7 @@ def pais_menor_poblacion(paises):
 
     return menor_pais
 
+# Funcion para calcular el promedio, en este caso necesitamos saber de población y superficie
 def promedio(paises, campo):
     total = 0
     for pais in paises:
