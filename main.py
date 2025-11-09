@@ -47,13 +47,13 @@ def carga_inicial():
 
     if not os.path.exists(archivo_nombre):
         # Si no existe, lo creamos vacío con el encabezado
-        with open(archivo_nombre, "w", newline="") as archivo:
+        with open(archivo_nombre, "w", newline="", encoding="utf-8") as archivo:
             writer = csv.writer(archivo)
             writer.writerow(["nombre", "poblacion", "superficie", "continente"])
         print("No se encontró el archivo 'paises.csv'. Se creó uno nuevo.")
         return []
 
-    with open(archivo_nombre, "r", newline="") as archivo:
+    with open(archivo_nombre, "r", newline="", encoding="utf-8") as archivo:
 
         reader = csv.reader(archivo)
         next(reader)  # Saltamos el encabezado
@@ -79,7 +79,7 @@ def actualizar_csv(paises):
     
     campos = ["nombre", "poblacion", "superficie", "continente"]
 
-    with open(archivo_nombre, "w", newline="") as archivo:
+    with open(archivo_nombre, "w", newline="", encoding="utf-8") as archivo:
 
         # Usamos DictWriter para escribir diccionarios directamente
         writer = csv.DictWriter(archivo, fieldnames=campos)
