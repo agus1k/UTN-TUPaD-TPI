@@ -1,33 +1,21 @@
 # (TPI Programación 1)
 El objetivo principal de este trabajo practico integrar es aplicar los conocimientos fundamentales de Python para desarrollar un sistema de consola capaz de gestionar un conjunto de datos de países, implementando funcionalidades de filtrado, ordenamiento y cálculo de estadísticas.
-## Gestión de Datos de Países en Python 
-## Características Principales
 
-El sistema permite gestionar un archivo `paises.csv` a través de un menú interactivo en la consola. Las funcionalidades implementadas son:
 
-* **1. Agregar país:** Permite añadir un nuevo país al registro solicitando nombre, población, superficie y continente.
-* **2. Actualizar datos de un país:** Permite buscar un país por nombre y modificar su población o superficie.
-* **3. Buscar un país:** Realiza una búsqueda por coincidencias en el nombre del país y muestra sus datos.
-* **4. Filtrar países:** Ofrece sub-menús para filtrar el conjunto de datos por:
-    * Continente
-    * Rango de población (mínimo y máximo)
-    * Rango de superficie (mínimo y máximo)
-* **5. Ordenar países:** Muestra la lista de países ordenada según el criterio seleccionado:
-    * Nombre (alfabético)
-    * Población (ascendente)
-    * Superficie (ascendente o descendente)
-* **6. Mostrar estadísticas:** Calcula y muestra las siguientes métricas sobre el conjunto de datos:
-    * País con mayor población
-    * País con menor población
-    * Promedio de población
-    * Promedio de superficie
-    * Cantidad de países por continente
+## Datos de la Universidad y la Cátedra
 
-## Tecnologías Utilizadas
+**Universidad:** Universidad Tecnológica Nacional (UTN)
+**Cátedra:** Programación 1
 
-* **Python 3:** Lenguaje principal del proyecto.
-* **Módulo `csv`:** Para la lectura y escritura de los datos (persistencia).
-* **Módulo `os`:** Para verificar la existencia del archivo `paises.csv`.
+## Integrantes
+
+* Agustin Miranda
+* Tobias Correa
+
+## Datos de Profesores
+
+**Profesor:** Virginia Cimino
+**Tutor:** Alberto Cortez
 
 ## Estructura del Proyecto
 
@@ -48,3 +36,49 @@ El proyecto se basa en un modelo de **lista de diccionarios**, donde cada diccio
 3.  Asegúrate de que el archivo `main.py` y `paises.csv` se encuentren en el mismo directorio.
 4.  Abre una terminal en ese directorio y ejecuta el siguiente comando:
 python main.py
+
+## Tecnologías Utilizadas
+
+* **Python 3:** Lenguaje principal del proyecto.
+* **Módulo `csv`:** Para la lectura y escritura de los datos (persistencia).
+* **Módulo `os`:** Para verificar la existencia del archivo `paises.csv`.
+
+## Links
+* **https://github.com/agus1k/UTN-TUPaD-TPI
+* **https://www.youtube.com/watch?v=vRfZqV7UeqA
+
+#Ejemplos de Entrada y Salida
+
+El programa se maneja a través de un menú numérico.
+
+Ejemplo de Menú Principal:
+
+    Bienvenido al programa de gestión de paises!
+    Elija su opción:
+    1. Agregar país
+    2. Actualizar datos de un país
+    3. Buscar un país
+    4. Filtrar países
+    5. Ordenar países
+    6. Mostrar estadísticas
+    7. Salir
+Ejemplo de Flujo (Filtrar países):
+
+Entrada de Usuario: 4
+
+Salida del Programa (Sub-menú):
+
+Ingrese por que criterio desea filtrar (C - Continente / P - Población / S - Superficie):
+Entrada de Usuario: C
+
+Salida del Programa (Prompt):
+
+Ingrese el continente por el cual desea filtrar:
+Entrada de Usuario: Europa
+
+Salida del Programa (Resultados):
+
+Estos son los países del continente Europa:
+[{'nombre': 'Francia', 'poblacion': 2000000, 'superficie': 3000000, 'continente': 'Europa'}]
+
+
