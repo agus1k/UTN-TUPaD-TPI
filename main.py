@@ -58,7 +58,19 @@ def carga_inicial():
     with open(archivo_nombre, "r", newline="", encoding="utf-8") as archivo:
 
         reader = csv.reader(archivo)
-        next(reader)  # Saltamos el encabezado
+
+        encabezado = next(reader, None)  # Saltamos el encabezado
+
+        # Si no hay encabezado, el archivo está vacío
+        if encabezado is None:
+            print(f"Advertencia: El archivo '{archivo_nombre}' está vacío. Se iniciará con lista vacía.")
+            return []
+        
+        # Validar que el encabezado tenga las columnas correctas 
+        if len(encabezado) != 4:
+            print(f"Advertencia: El encabezado del archivo no tiene el formato esperado.")
+            print(f"Se esperaban 4 columnas (nombre, poblacion, superficie, continente).")
+            return []
 
         # Usamos enumerate para saber el número de línea en caso de error
         for i, linea in enumerate(reader):
@@ -128,13 +140,12 @@ def crear_pais(nombre,poblacion,superficie,continente):
 def agregar_pais(paises): 
     """
     Solicita los datos de un nuevo país por consola y lo agrega a la lista en memoria en caso de que no exista.
-    En caso de que ya exista, ofrece la opción de actualizar sus datos.
 
     Interactúa con el usuario para obtener los datos del país, crea un diccionario
     formateado mediante la función `crear_pais()` y lo añade a la lista existente.
     Finalmente, actualiza el archivo CSV para reflejar el nuevo estado de la lista.
     """
-    existe=False
+
 
     nombre = pedir_string("Ingrese el nombre del país: ")
     for p in paises:
@@ -142,14 +153,16 @@ def agregar_pais(paises):
             print("El país ya existe en la base de datos.")
             return
     
-    if existe == False:
-        poblacion = pedir_num("Ingrese la población del país: ")     
-        superficie = pedir_num("Ingrese la superficie del país: ")
-        continente = pedir_string("Ingrese el continente al que pertenece el país: ")
-        pais = crear_pais(nombre,poblacion,superficie,continente)
-        paises.append(pais)
-        actualizar_csv(paises)
-        print(f"El país {pais['nombre']} ha sido agregado exitosamente.")
+    poblacion = pedir_num("Ingrese la población del país: ")     
+    superficie = pedir_num("Ingrese la superficie del país: ")
+    continente = pedir_string("Ingrese el continente al que pertenece el país: ")
+
+    pais = crear_pais(nombre,poblacion,superficie,continente)
+
+    paises.append(pais)
+
+    actualizar_csv(paises)
+    print(f"El país {pais['nombre']} ha sido agregado exitosamente.")
 
 # Funcion para buscar un país
 def buscar_pais(paises):
