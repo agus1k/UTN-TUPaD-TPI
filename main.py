@@ -344,37 +344,46 @@ def ordenar_paises(paises, campo, descendente=False):
             break
     return lista_ordenada
 
-def ordenar_paises_impl(paises): # AGREGAR VALIDACIONES
-    opcion = pedir_num("""
-    Ordenar por:
-    1. Nombre
-    2. Población
-    3. Superficie
-                       
-    """)
+def ordenar_paises_impl(paises):
+    resultados = []   
+    while True:
+        opcion = pedir_num("""
+        Ordenar por:
+        1. Nombre
+        2. Población
+        3. Superficie
+                        
+        """)
     
-    resultados = []
+        match opcion:
+            case 1:
+                resultados = ordenar_paises(paises, 'nombre')
+                break
+            case 2:
+                resultados = ordenar_paises(paises, 'poblacion')
+                break
+            case 3:
+                # Si selecciona la opcion de superficie, preguntamos si quiere en forma ascendente o descendente
+                while True:
+                    opcion = pedir_num("""
+                    Ordenar de forma:
+                    1. Ascendente
+                    2. Descendente
 
-    match opcion:
-        case 1:
-            resultados = ordenar_paises(paises, 'nombre')
-        case 2:
-            resultados = ordenar_paises(paises, 'poblacion')
-        case 3:
-            # Si selecciona la opcion de superficie, preguntamos si quiere en forma ascendente o descendente
-            opcion = pedir_num("""
-            Ordenar de forma:
-            1. Ascendente
-            2. Descendente
-
-            """)
-            if opcion == 1:
-                resultados = ordenar_paises(paises, 'superficie')
-            elif opcion == 2:
-                resultados = ordenar_paises(paises, 'superficie', True)
-        case _:
-            print("Opción inválida.")
-            return
+                    """)
+                    if opcion == 1:
+                        resultados = ordenar_paises(paises, 'superficie')
+                        break
+                    elif opcion == 2:
+                        resultados = ordenar_paises(paises, 'superficie', True)
+                        break
+                    else:
+                        print("Opción inválida.")
+                        continue
+            case _:
+                print("Opción inválida.")
+                continue
+        break                
     
     print("\n==== LISTA ORDENADA ====")
     for pais in resultados:
