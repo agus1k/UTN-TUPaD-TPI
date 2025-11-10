@@ -35,6 +35,13 @@ def pedir_num(mensaje):
 def normalizar_string(texto):
     return " ".join(texto.lower().split()).title()
 
+# Funcion para validar que la lista no este vacia
+def validar_lista_no_vacia(paises, mensaje_error="No hay países en la base de datos"):
+    if not paises:
+        print(mensaje_error)
+        return False
+    return True
+
 # =======================================================
 #         FUNCIONES DE GESTIÓN DE ARCHIVOS (CSV)
 # =======================================================
