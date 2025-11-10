@@ -332,6 +332,8 @@ def filtrar_paises(paises):
 
 # Funcion para ordenar paises
 def ordenar_paises(paises, campo, descendente=False):
+    if not validar_lista_no_vacia(paises):
+        return []
 
     # Sacamos cantidad de elementos de la lista
     cant_elementos = len(paises)
@@ -411,8 +413,7 @@ def ordenar_paises_impl(paises):
 # =======================================================
 
 def pais_mayor_poblacion(paises):
-    if not paises:
-        print("Error: No hay países en la base de datos")
+    if not validar_lista_no_vacia(paises):
         return None
 
     mayor_pais = paises[0]
@@ -423,6 +424,9 @@ def pais_mayor_poblacion(paises):
     return mayor_pais
 
 def pais_menor_poblacion(paises):
+    if not validar_lista_no_vacia(paises):
+        return None
+
     menor_pais = paises[0]
     for pais in paises:
         if pais['poblacion'] < menor_pais['poblacion']:
@@ -434,8 +438,7 @@ def pais_menor_poblacion(paises):
 def promedio(paises, campo):
     total = 0
 
-    if not paises or len(paises) == 0:
-        print(f"Error: No hay países para calcular el promedio de {campo}")
+    if not validar_lista_no_vacia(paises, f"No hay países para calcular el promedio de {campo}"):
         return 0
 
     for pais in paises:
@@ -456,6 +459,9 @@ def paises_por_continente(paises):
     return contador
 
 def mostrar_estadisticas(paises):
+    if not validar_lista_no_vacia(paises, "No hay datos suficientes para mostrar estadísticas."):
+        return
+
     pais_mayor = pais_mayor_poblacion(paises)
     pais_menor = pais_menor_poblacion(paises)
     continentes = paises_por_continente(paises)  
