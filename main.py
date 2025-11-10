@@ -133,17 +133,7 @@ def agregar_pais(paises):
     for p in paises:
         if normalizar_string(nombre) == normalizar_string(p["nombre"]):
             print("El país ya existe en la base de datos.")
-            existe=True
-            while True:
-                opcion_actualizar=pedir_string("¿Desea actualizar sus datos? (S/N): ")
-                if opcion_actualizar.upper() == "S":
-                    actualizar_pais(paises)
-                    break
-                elif opcion_actualizar.upper() == "N":
-                    print("No se realizaron cambios.")
-                    break
-                else:
-                    print("Opción incorrecta.")
+            return
     
     if existe == False:
         poblacion = pedir_num("Ingrese la población del país: ")     
