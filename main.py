@@ -104,8 +104,8 @@ def crear_pais(nombre,poblacion,superficie,continente):
 
     return {
         "nombre": normalizar_string(nombre.title()),
-        "poblacion": int(poblacion),
-        "superficie": int(superficie),
+        "poblacion": poblacion,
+        "superficie": superficie,
         "continente": normalizar_string(continente.title())
     }
 
