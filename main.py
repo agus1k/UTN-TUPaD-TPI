@@ -404,6 +404,10 @@ def ordenar_paises_impl(paises):
 # =======================================================
 
 def pais_mayor_poblacion(paises):
+    if not paises:
+        print("Error: No hay países en la base de datos")
+        return None
+
     mayor_pais = paises[0]
     for pais in paises:
         if pais['poblacion'] > mayor_pais['poblacion']:
