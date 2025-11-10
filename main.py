@@ -127,6 +127,7 @@ def agregar_pais(paises):
     paises.append(pais)
 
     actualizar_csv(paises)
+    print(f"El país {pais['nombre']} ha sido agregado exitosamente.")
 
 # Funcion para buscar un país
 def buscar_pais(paises):
