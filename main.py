@@ -35,6 +35,13 @@ def pedir_num(mensaje):
 def normalizar_string(texto):
     return " ".join(texto.lower().split()).title()
 
+# Funcion para validar que la lista no este vacia
+def validar_lista_no_vacia(paises, mensaje_error="No hay países en la base de datos"):
+    if not paises:
+        print(mensaje_error)
+        return False
+    return True
+
 # =======================================================
 #         FUNCIONES DE GESTIÓN DE ARCHIVOS (CSV)
 # =======================================================
@@ -51,7 +58,19 @@ def carga_inicial():
     with open(archivo_nombre, "r", newline="", encoding="utf-8") as archivo:
 
         reader = csv.reader(archivo)
-        next(reader)  # Saltamos el encabezado
+
+        encabezado = next(reader, None)  # Saltamos el encabezado
+
+        # Si no hay encabezado, el archivo está vacío
+        if encabezado is None:
+            print(f"Advertencia: El archivo '{archivo_nombre}' está vacío. Se iniciará con lista vacía.")
+            return []
+        
+        # Validar que el encabezado tenga las columnas correctas 
+        if len(encabezado) != 4:
+            print(f"Advertencia: El encabezado del archivo no tiene el formato esperado.")
+            print(f"Se esperaban 4 columnas (nombre, poblacion, superficie, continente).")
+            return []
 
         # Usamos enumerate para saber el número de línea en caso de error
         for i, linea in enumerate(reader):
@@ -120,37 +139,30 @@ def crear_pais(nombre,poblacion,superficie,continente):
 # Funcion para agregar un pais al csv.
 def agregar_pais(paises): 
     """
-    Solicita los datos de un nuevo país por consola y lo agrega a la lista en memoria.
+    Solicita los datos de un nuevo país por consola y lo agrega a la lista en memoria en caso de que no exista.
 
     Interactúa con el usuario para obtener los datos del país, crea un diccionario
     formateado mediante la función `crear_pais()` y lo añade a la lista existente.
     Finalmente, actualiza el archivo CSV para reflejar el nuevo estado de la lista.
     """
-    existe=False
+
+
     nombre = pedir_string("Ingrese el nombre del país: ")
     for p in paises:
-        if normalizar_string(nombre) in p["nombre"]:
+        if normalizar_string(nombre) == normalizar_string(p["nombre"]):
             print("El país ya existe en la base de datos.")
-            opcion_actualizar=pedir_string("¿Desea actualizar sus datos? (S/N): ")
-            if opcion_actualizar.upper() == "S":
-                existe=True
-                actualizar_pais(paises)
-                break
-            else:
-                existe=True
-                print("No se realizaron cambios.")
-                break
+            return
+    
+    poblacion = pedir_num("Ingrese la población del país: ")     
+    superficie = pedir_num("Ingrese la superficie del país: ")
+    continente = pedir_string("Ingrese el continente al que pertenece el país: ")
 
-    
-    
-    if existe == False:
-        poblacion = pedir_num("Ingrese la población del país: ")     
-        superficie = pedir_num("Ingrese la superficie del país: ")
-        continente = pedir_string("Ingrese el continente al que pertenece el país: ")
-        pais = crear_pais(nombre,poblacion,superficie,continente)
-        paises.append(pais)
-        actualizar_csv(paises)
-        print(f"El país {pais['nombre']} ha sido agregado exitosamente.")
+    pais = crear_pais(nombre,poblacion,superficie,continente)
+
+    paises.append(pais)
+
+    actualizar_csv(paises)
+    print(f"El país {pais['nombre']} ha sido agregado exitosamente.")
 
 # Funcion para buscar un país
 def buscar_pais(paises):
@@ -258,19 +270,22 @@ def filtrar_continente(paises):
         for pais in resultados:
             print(f"- {pais['nombre']} | Población: {pais['poblacion']} | Superficie: {pais['superficie']} | Continente: {pais['continente']}")
 
+def validar_rango(tipo_dato):
+    """Valida que el mínimo no sea mayor al máximo"""
+    while True:
+        minimo = pedir_num(f"Ingrese {tipo_dato} mínima: ")
+        maximo = pedir_num(f"Ingrese {tipo_dato} máxima: ")
+        if minimo > maximo:
+            print("El valor mínimo no puede ser mayor al máximo.")
+        else:
+            return minimo, maximo
+
 # Filtrar por poblacion
 def filtrar_poblacion(paises):
     resultados = []
 
     # Verificamos que la poblacion minima no sea mayor a la maxima
-    while True:
-        poblacion_min = pedir_num("Ingrese la población mínima: ")
-        poblacion_max = pedir_num("Ingrese la población máxima: ")
-
-        if poblacion_min > poblacion_max:
-            print("El valor mínimo no puede ser mayor al máximo.")
-        else:
-            break
+    poblacion_min, poblacion_max = validar_rango("población")
     
     # Recorremos paises y guardamos en la lista los que cumplan la condicion
     for pais in paises:
@@ -292,15 +307,8 @@ def filtrar_superficie(paises):
     resultados = []
 
     # Validamos que la superficie minima no sea mayor a la maxima
-    while True:
-        superficie_min = pedir_num("Ingrese la superficie mínima: ")
-        superficie_max = pedir_num("Ingrese la superficie máxima: ")
+    superficie_min, superficie_max = validar_rango("superficie")
 
-        if superficie_min > superficie_max:
-            print("El valor mínimo no puede ser mayor al máximo.")
-        else:
-            break
-    
     for pais in paises:
         if superficie_min <= pais["superficie"] and pais["superficie"]<= superficie_max:
             resultados.append(pais)
@@ -337,6 +345,8 @@ def filtrar_paises(paises):
 
 # Funcion para ordenar paises
 def ordenar_paises(paises, campo, descendente=False):
+    if not validar_lista_no_vacia(paises):
+        return []
 
     # Sacamos cantidad de elementos de la lista
     cant_elementos = len(paises)
@@ -416,6 +426,9 @@ def ordenar_paises_impl(paises):
 # =======================================================
 
 def pais_mayor_poblacion(paises):
+    if not validar_lista_no_vacia(paises):
+        return None
+
     mayor_pais = paises[0]
     for pais in paises:
         if pais['poblacion'] > mayor_pais['poblacion']:
@@ -424,6 +437,9 @@ def pais_mayor_poblacion(paises):
     return mayor_pais
 
 def pais_menor_poblacion(paises):
+    if not validar_lista_no_vacia(paises):
+        return None
+
     menor_pais = paises[0]
     for pais in paises:
         if pais['poblacion'] < menor_pais['poblacion']:
@@ -434,6 +450,10 @@ def pais_menor_poblacion(paises):
 # Funcion para calcular el promedio, en este caso necesitamos saber de población y superficie
 def promedio(paises, campo):
     total = 0
+
+    if not validar_lista_no_vacia(paises, f"No hay países para calcular el promedio de {campo}"):
+        return 0
+
     for pais in paises:
         total += pais[campo]
     
@@ -452,6 +472,9 @@ def paises_por_continente(paises):
     return contador
 
 def mostrar_estadisticas(paises):
+    if not validar_lista_no_vacia(paises, "No hay datos suficientes para mostrar estadísticas."):
+        return
+
     pais_mayor = pais_mayor_poblacion(paises)
     pais_menor = pais_menor_poblacion(paises)
     continentes = paises_por_continente(paises)  
@@ -486,6 +509,11 @@ def mostrar_menu(paises):
     7. Salir
     """)
         
+        # Si no hay paises, evitamos hacer cualquier operacion que no sea agregar un pais o salir
+        if not paises and opcion not in [1,7]:
+            print("Por favor, agregue un país antes de realizar cualquier otra operación")
+            continue
+
         match opcion:
             case 1: 
                 agregar_pais(paises)
@@ -496,13 +524,13 @@ def mostrar_menu(paises):
             case 4:
                 filtrar_paises(paises)
             case 5:
-                ordenar_paises_impl(paises)
+                 ordenar_paises_impl(paises)
             case 6:
-                mostrar_estadisticas(paises)
+                 mostrar_estadisticas(paises)
             case 7:
-                break
+                 break
             case _:
-                print("Opción inválida. Por favor, intente de nuevo.")
+                  print("Opción inválida. Por favor, intente de nuevo.")
 
 # =======================================================
 #                          MAIN
