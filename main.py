@@ -46,11 +46,6 @@ def carga_inicial():
     archivo_nombre = "paises.csv"
 
     if not os.path.exists(archivo_nombre):
-        # Si no existe, lo creamos vacío con el encabezado
-        with open(archivo_nombre, "w", newline="", encoding="utf-8") as archivo:
-            writer = csv.writer(archivo)
-            writer.writerow(["nombre", "poblacion", "superficie", "continente"])
-        print("No se encontró el archivo 'paises.csv'. Se creó uno nuevo.")
         return []
 
     with open(archivo_nombre, "r", newline="", encoding="utf-8") as archivo:
@@ -58,14 +53,27 @@ def carga_inicial():
         reader = csv.reader(archivo)
         next(reader)  # Saltamos el encabezado
 
-        for linea in reader:
+        # Usamos enumerate para saber el número de línea en caso de error
+        for i, linea in enumerate(reader):
             if not linea:
-                continue  # Saltamos líneas vacías
+                continue 
 
-            nombre, poblacion, superficie, continente = linea
+            # Asumimos 4 columnas, si no, es un error de formato
+            if len(linea) != 4:
+                print(f"Error: Línea {i+2} malformada. Se omitió.")
+                continue
 
-            pais = crear_pais(nombre,poblacion,superficie,continente)
-            paises.append(pais) # Agregamos el diccionario a la lista principal
+            nombre, poblacion_str, superficie_str, continente = linea
+
+            if not poblacion_str.isdigit() or not superficie_str.isdigit():
+                print(f"Error: Datos numéricos inválidos en línea {i+2} ('{nombre}'). Se omitió.")
+                continue
+            
+            # Si pasa la validación, convertimos
+            poblacion_int = int(poblacion_str)
+            superficie_int = int(superficie_str)
+            pais = crear_pais(nombre, poblacion_int, superficie_int, continente)
+            paises.append(pais)
     
     return paises
 
@@ -118,17 +126,31 @@ def agregar_pais(paises):
     formateado mediante la función `crear_pais()` y lo añade a la lista existente.
     Finalmente, actualiza el archivo CSV para reflejar el nuevo estado de la lista.
     """
-
+    existe=False
     nombre = pedir_string("Ingrese el nombre del país: ")
-    poblacion = pedir_num("Ingrese la población del país: ")     
-    superficie = pedir_num("Ingrese la superficie del país: ")
-    continente = pedir_string("Ingrese el continente al que pertenece el país: ")
+    for p in paises:
+        if normalizar_string(nombre) in p["nombre"]:
+            print("El país ya existe en la base de datos.")
+            opcion_actualizar=pedir_string("¿Desea actualizar sus datos? (S/N): ")
+            if opcion_actualizar.upper() == "S":
+                existe=True
+                actualizar_pais(paises)
+                break
+            else:
+                existe=True
+                print("No se realizaron cambios.")
+                break
 
-    pais = crear_pais(nombre,poblacion,superficie,continente)
-    paises.append(pais)
-
-    actualizar_csv(paises)
-    print(f"El país {pais['nombre']} ha sido agregado exitosamente.")
+    
+    
+    if existe == False:
+        poblacion = pedir_num("Ingrese la población del país: ")     
+        superficie = pedir_num("Ingrese la superficie del país: ")
+        continente = pedir_string("Ingrese el continente al que pertenece el país: ")
+        pais = crear_pais(nombre,poblacion,superficie,continente)
+        paises.append(pais)
+        actualizar_csv(paises)
+        print(f"El país {pais['nombre']} ha sido agregado exitosamente.")
 
 # Funcion para buscar un país
 def buscar_pais(paises):
