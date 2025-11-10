@@ -509,6 +509,11 @@ def mostrar_menu(paises):
     7. Salir
     """)
         
+        # Si no hay paises, evitamos hacer cualquier operacion que no sea agregar un pais o salir
+        if not paises and opcion not in [1,7]:
+            print("Por favor, agregue un país antes de realizar cualquier otra operación")
+            continue
+
         match opcion:
             case 1: 
                 agregar_pais(paises)
@@ -519,13 +524,13 @@ def mostrar_menu(paises):
             case 4:
                 filtrar_paises(paises)
             case 5:
-                ordenar_paises_impl(paises)
+                 ordenar_paises_impl(paises)
             case 6:
-                mostrar_estadisticas(paises)
+                 mostrar_estadisticas(paises)
             case 7:
-                break
+                 break
             case _:
-                print("Opción inválida. Por favor, intente de nuevo.")
+                  print("Opción inválida. Por favor, intente de nuevo.")
 
 # =======================================================
 #                          MAIN
