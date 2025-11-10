@@ -250,19 +250,22 @@ def filtrar_continente(paises):
         for pais in resultados:
             print(f"- {pais['nombre']} | Población: {pais['poblacion']} | Superficie: {pais['superficie']} | Continente: {pais['continente']}")
 
+def validar_rango(tipo_dato):
+    """Valida que el mínimo no sea mayor al máximo"""
+    while True:
+        minimo = pedir_num(f"Ingrese {tipo_dato} mínima: ")
+        maximo = pedir_num(f"Ingrese {tipo_dato} máxima: ")
+        if minimo > maximo:
+            print("El valor mínimo no puede ser mayor al máximo.")
+        else:
+            return minimo, maximo
+
 # Filtrar por poblacion
 def filtrar_poblacion(paises):
     resultados = []
 
     # Verificamos que la poblacion minima no sea mayor a la maxima
-    while True:
-        poblacion_min = pedir_num("Ingrese la población mínima: ")
-        poblacion_max = pedir_num("Ingrese la población máxima: ")
-
-        if poblacion_min > poblacion_max:
-            print("El valor mínimo no puede ser mayor al máximo.")
-        else:
-            break
+    poblacion_min, poblacion_max = validar_rango("población")
     
     # Recorremos paises y guardamos en la lista los que cumplan la condicion
     for pais in paises:
@@ -284,15 +287,8 @@ def filtrar_superficie(paises):
     resultados = []
 
     # Validamos que la superficie minima no sea mayor a la maxima
-    while True:
-        superficie_min = pedir_num("Ingrese la superficie mínima: ")
-        superficie_max = pedir_num("Ingrese la superficie máxima: ")
+    superficie_min, superficie_max = validar_rango("superficie")
 
-        if superficie_min > superficie_max:
-            print("El valor mínimo no puede ser mayor al máximo.")
-        else:
-            break
-    
     for pais in paises:
         if superficie_min <= pais["superficie"] and pais["superficie"]<= superficie_max:
             resultados.append(pais)
@@ -426,6 +422,11 @@ def pais_menor_poblacion(paises):
 # Funcion para calcular el promedio, en este caso necesitamos saber de población y superficie
 def promedio(paises, campo):
     total = 0
+
+    if not paises or len(paises) == 0:
+        print(f"Error: No hay países para calcular el promedio de {campo}")
+        return 0
+
     for pais in paises:
         total += pais[campo]
     
